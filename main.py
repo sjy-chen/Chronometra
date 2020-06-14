@@ -14,26 +14,35 @@ class Game:
         self.clock = pg.time.Clock()
         pg.key.set_repeat(500, 100)
         self.load_data()
+        self.orange_collected = False
+        self.purple_collected = False
+        self.yellow_collected = False
+        self.green_collected = False
+        self.orange_placed = False
+        self.purple_placed = False
+        self.yellow_placed = False
+        self.green_placed = False
+        self.next_level = False
 
     def load_data(self):
-        game_folder = path.dirname(__file__)
-        img_folder = path.join(game_folder, 'img')
-        map_folder = path.join(game_folder, 'maps')
-        self.imgs = {'stone': TiledMap(path.join(map_folder, 'Stone.tmx')), 'lava': TiledMap(path.join(map_folder, 'Lava.tmx'))}
-        self.type = random.choice(['stone', 'lava'])
-        self.map = self.imgs[self.type]
-        if self.map == self.imgs['stone']:
-            maps = 'stone'
-            print(maps)
-        elif self.map == self.imgs['lava']:
-            maps = 'lava'
-            print(maps)
-        self.map_img = self.map.make_map()
-        self.map_rect = self.map_img.get_rect()
-        self.player_img_front = pg.image.load(path.join(img_folder, 'Main Character Front.png')).convert_alpha()
-        self.player_img_back = pg.image.load(path.join(img_folder, 'Main Character Back.png')).convert_alpha()
-        self.player_img_left = pg.image.load(path.join(img_folder, 'Main Character Left.png')).convert_alpha()
-        self.player_img_right = pg.image.load(path.join(img_folder, 'Main Character Right.png')).convert_alpha()
+        self.game_folder = path.dirname(__file__)
+        self.img_folder = path.join(self.game_folder, 'img')
+        self.map_folder = path.join(self.game_folder, 'maps')
+        # self.imgs = {'stone': TiledMap(path.join(self.map_folder, 'Stone.tmx')), 'lava': TiledMap(path.join(self.map_folder, 'Lava.tmx'))}
+        # # self.type = random.choice(['stone', 'lava'])
+        # self.map = self.imgs['stone']
+        # if self.map == self.imgs['stone']:
+        #     maps = 'Stone'
+        #     print(maps)
+        # elif self.map == self.imgs['lava']:
+        #     maps = 'Lava'
+        #     print(maps)
+        # self.map_img = self.map.make_map()
+        # self.map_rect = self.map_img.get_rect()
+        self.player_img_front = pg.image.load(path.join(self.img_folder, 'Main Character Front.png')).convert_alpha()
+        self.player_img_back = pg.image.load(path.join(self.img_folder, 'Main Character Back.png')).convert_alpha()
+        self.player_img_left = pg.image.load(path.join(self.img_folder, 'Main Character Left.png')).convert_alpha()
+        self.player_img_right = pg.image.load(path.join(self.img_folder, 'Main Character Right.png')).convert_alpha()
 
     def new(self):
         # initialize all variables and do all the setup for a new game
@@ -44,6 +53,20 @@ class Game:
         self.orange = pg.sprite.Group()
         self.purple = pg.sprite.Group()
         self.green = pg.sprite.Group()
+        self.imgs = {'stone': TiledMap(path.join(self.map_folder, 'Stone.tmx')),
+                     'lava': TiledMap(path.join(self.map_folder, 'Lava.tmx'))}
+        if self.next_level:
+            self.map = self.imgs['lava']
+        else:
+            self.map = self.imgs['stone']
+        if self.map == self.imgs['stone']:
+            maps = 'Stone'
+            print(maps)
+        elif self.map == self.imgs['lava']:
+            maps = 'Lava'
+            print(maps)
+        self.map_img = self.map.make_map()
+        self.map_rect = self.map_img.get_rect()
         for tile_object in self.map.tmxdata.objects:
             if tile_object.name == 'Player':
                 self.player = Player(self, tile_object.x, tile_object.y)
@@ -82,54 +105,70 @@ class Game:
         green_hit = pg.sprite.spritecollide(self.player, self.green, False)
         if green_hit:
             if self.map == self.imgs['stone']:
-                green = True
                 status = 'Green ore collected.'
                 print(status)
+                self.green_collected = True
             elif self.map == self.imgs['lava']:
                 status = 'Green ore placed.'
                 print(status)
+                self.green_placed = True
 
         purple_hit = pg.sprite.spritecollide(self.player, self.purple, False)
         if purple_hit:
             if self.map == self.imgs['stone']:
                 status = 'Purple ore collected.'
                 print(status)
+                self.purple_collected = True
             elif self.map == self.imgs['lava']:
                 status = 'Purple ore placed.'
                 print(status)
+                self.purple_placed = True
 
         orange_hit = pg.sprite.spritecollide(self.player, self.orange, False)
         if orange_hit:
             if self.map == self.imgs['stone']:
                 status = 'Orange ore collected.'
                 print(status)
+                self.orange_collected = True
             elif self.map == self.imgs['lava']:
                 status = 'Orange ore placed.'
                 print(status)
+                self.orange_placed = True
 
         yellow_hit = pg.sprite.spritecollide(self.player, self.yellow, False)
         if yellow_hit:
             if self.map == self.imgs['stone']:
                 status = 'Yellow ore collected.'
                 print(status)
+                self.yellow_collected = True
             elif self.map == self.imgs['lava']:
                 status = 'Yellow ore placed.'
                 print(status)
+                self.yellow_placed = True
 
         bossfight = pg.sprite.spritecollide(self.player, self.bossfight, False)
         if bossfight:
             if self.map == self.imgs['stone']:
-                status = 'Next Level!'
-                print(status)
-            elif self.map == self.imgs['lava']:
-                status = 'Boss Fight!'
-                print(status)
+                if self.yellow_collected and self.orange_collected and self.purple_collected and self.green_collected:
+                    status = 'Next Level!'
+                    print(status)
+                    self.next_level = True
+                else:
+                    status = 'Collect all the ores!'
+                    print(status)
+            if self.map == self.imgs['lava']:
+                if self.yellow_placed and self.orange_placed and self.purple_placed and self.green_placed:
+                    status = 'Boss Fight!'
+                    print(status)
+                else:
+                    status = 'Place all the ores!'
+                    print(status)
 
-    def draw_grid(self):
-        for x in range(0, WIDTH, TILESIZE):
-            pg.draw.line(self.screen, LIGHTGREY, (x,0), (x, HEIGHT))
-        for y in range(0, HEIGHT, TILESIZE):
-            pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
+    # def draw_grid(self):
+    #     for x in range(0, WIDTH, TILESIZE):
+    #         pg.draw.line(self.screen, LIGHTGREY, (x,0), (x, HEIGHT))
+    #     for y in range(0, HEIGHT, TILESIZE):
+    #         pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
 
     def draw(self):
         # self.screen.fill(BGCOLOR)
@@ -154,10 +193,29 @@ class Game:
     def show_go_screen(self):
         pass
 
+    def Next_level(self):
+        pass
+
+    def show_load_screen(self):
+        background = pg.image.load(path.join(path.join(path.dirname(__file__), 'img'), 'Loading.png')).convert_alpha()
+        background_rect = background.get_rect()
+        pg.display.set_mode((WIDTH, HEIGHT)).blit(background, background_rect)
+        pg.display.flip()
+        waiting = True
+        while waiting:
+            pg.time.Clock().tick(FPS)
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                if event.type == pg.KEYUP or event.type == pg.MOUSEBUTTONDOWN:
+                    waiting = False
+
 # create the game object
 g = Game()
 g.show_start_screen()
+g.show_load_screen()
 while True:
+    if g.next_level:
     g.new()
     g.run()
     g.show_go_screen()
