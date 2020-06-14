@@ -216,6 +216,6 @@ g.show_start_screen()
 g.show_load_screen()
 while True:
     if g.next_level:
-    g.new()
-    g.run()
-    g.show_go_screen()
+        g.new()
+        g.run()
+        g.show_go_screen()
