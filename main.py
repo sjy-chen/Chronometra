@@ -7,7 +7,7 @@ from tilemap import *
 import random
 
 class Game:
-    def __init__(self):
+    def __init__(self, next_level):
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
@@ -22,23 +22,12 @@ class Game:
         self.purple_placed = False
         self.yellow_placed = False
         self.green_placed = False
-        self.next_level = False
+        self.next_level = next_level
 
     def load_data(self):
         self.game_folder = path.dirname(__file__)
         self.img_folder = path.join(self.game_folder, 'img')
         self.map_folder = path.join(self.game_folder, 'maps')
-        # self.imgs = {'stone': TiledMap(path.join(self.map_folder, 'Stone.tmx')), 'lava': TiledMap(path.join(self.map_folder, 'Lava.tmx'))}
-        # # self.type = random.choice(['stone', 'lava'])
-        # self.map = self.imgs['stone']
-        # if self.map == self.imgs['stone']:
-        #     maps = 'Stone'
-        #     print(maps)
-        # elif self.map == self.imgs['lava']:
-        #     maps = 'Lava'
-        #     print(maps)
-        # self.map_img = self.map.make_map()
-        # self.map_rect = self.map_img.get_rect()
         self.player_img_front = pg.image.load(path.join(self.img_folder, 'Main Character Front.png')).convert_alpha()
         self.player_img_back = pg.image.load(path.join(self.img_folder, 'Main Character Back.png')).convert_alpha()
         self.player_img_left = pg.image.load(path.join(self.img_folder, 'Main Character Left.png')).convert_alpha()
@@ -57,7 +46,7 @@ class Game:
                      'lava': TiledMap(path.join(self.map_folder, 'Lava.tmx'))}
         if self.next_level:
             self.map = self.imgs['lava']
-        else:
+        elif not self.next_level:
             self.map = self.imgs['stone']
         if self.map == self.imgs['stone']:
             maps = 'Stone'
@@ -102,6 +91,9 @@ class Game:
         # update portion of the game loop
         self.all_sprites.update()
         self.camera.update(self.player)
+        if self.next_level:
+            self.playing = False
+            pg.event.wait()
         green_hit = pg.sprite.spritecollide(self.player, self.green, False)
         if green_hit:
             if self.map == self.imgs['stone']:
@@ -193,14 +185,12 @@ class Game:
     def show_go_screen(self):
         pass
 
-    def Next_level(self):
-        pass
-
     def show_load_screen(self):
         background = pg.image.load(path.join(path.join(path.dirname(__file__), 'img'), 'Loading.png')).convert_alpha()
         background_rect = background.get_rect()
         pg.display.set_mode((WIDTH, HEIGHT)).blit(background, background_rect)
         pg.display.flip()
+        pg.event.wait()
         waiting = True
         while waiting:
             pg.time.Clock().tick(FPS)
@@ -211,11 +201,13 @@ class Game:
                     waiting = False
 
 # create the game object
-g = Game()
+g = Game(False)
 g.show_start_screen()
-g.show_load_screen()
+# g.show_load_screen()
 while True:
-    if g.next_level:
-        g.new()
-        g.run()
-        g.show_go_screen()
+    g.new()
+    g.run()
+    g.show_load_screen()
+    g.new()
+    g.run()
+

@@ -31,8 +31,6 @@ class Player(pg.sprite.Sprite):
         if keys[pg.K_DOWN] or keys[pg.K_s]:
             self.image = self.image_front
             self.vel.y = PLAYER_SPEED
-        if self.vel.x != 0 and self.vel.y != 0:
-            self.vel *= 0.7071
 
     def collide_with_walls(self, dir):
         if dir == 'x':
