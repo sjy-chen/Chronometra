@@ -13,6 +13,7 @@ class Player(pg.sprite.Sprite):
         self.image_left = game.player_img_left
         self.image_right = game.player_img_right
         self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
         self.vel = vec(0,0)
         self.pos = vec(x, y)
 
