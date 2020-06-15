@@ -12,7 +12,7 @@ YELLOW = (255, 255, 255)
 WIDTH = 720
 HEIGHT = 480
 FPS = 60
-TITLE = "Tilemap Demo"
+TITLE = "Chronometra"
 BGCOLOR = DARKGREY
 
 TILESIZE = 16

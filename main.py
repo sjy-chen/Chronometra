@@ -5,7 +5,6 @@ from sprites import *
 from os import path
 from tilemap import *
 import random
-# import main_game_loop
 
 class Game:
     def __init__(self):
@@ -14,6 +13,8 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         pg.key.set_repeat(500, 100)
+        icon = pg.image.load('Images\Chronometra Icon.png')
+        pg.display.set_icon(icon)
         self.load_data()
         self.orange_collected = False
         self.purple_collected = False
@@ -166,12 +167,6 @@ class Game:
             exec(open('main_game_loop.py').read())
             self.quit()
 
-
-    # def draw_grid(self):
-    #     for x in range(0, WIDTH, TILESIZE):
-    #         pg.draw.line(self.screen, LIGHTGREY, (x,0), (x, HEIGHT))
-    #     for y in range(0, HEIGHT, TILESIZE):
-    #         pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
 
     def draw(self):
         # self.screen.fill(BGCOLOR)

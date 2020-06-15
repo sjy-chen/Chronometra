@@ -1,29 +1,15 @@
-import pygame, random, math
+import pygame as pg
+import random
+import math
 
-
-pygame.init()
+pg.init()
 global win
-win = pygame.display.set_mode((800, 800))
-
+win = pg.display.set_mode((800, 800))
 
 #title and Icon
-pygame.display.set_caption("Chronometra")
-icon = pygame.image.load('Images\Chronometra Icon.png')
-pygame.display.set_icon(icon)
-
-class player(object):
-    def __init__(self, x, y, move):
-        self.x = x
-        self.y = y
-        self.move = move
-        self.vel = 0.5
-    def draw(self, win):
-        if self.move != "hidden":
-            if self.move == "s": mainCharacter = pygame.image.load('Images\Main Character Front.png')
-            elif self.move == "a": mainCharacter = pygame.image.load('Images\Main Character Left.png')
-            elif self.move == "d": mainCharacter = pygame.image.load('Images\Main Character Right.png')
-            elif self.move == "w": mainCharacter = pygame.image.load('Images\Main Character Back.png')
-            win.blit(mainCharacter, (self.x, self.y))
+pg.display.set_caption("Chronometra")
+icon = pg.image.load('Images\Chronometra Icon.png')
+pg.display.set_icon(icon)
 
 class fireball(object):
     def __init__(self, x, y):
@@ -32,7 +18,7 @@ class fireball(object):
         self.vel = 10
 
     def draw(self, win):
-        win.blit(pygame.image.load('Images\Fire Ball Right.png'), (self.x, self.y))
+        win.blit(pg.image.load('Images\Fire Ball Right.png'), (self.x, self.y))
 
 class heart(object):
     def __init__(self, x, y):
@@ -41,23 +27,22 @@ class heart(object):
         self.vel = 7
         self.rage = 0
     def draw(self, win):
-        win.blit(pygame.image.load('Images\Heart.png'), (self.x, self.y))
+        win.blit(pg.image.load('Images\Heart.png'), (self.x, self.y))
         #health bar
-        pygame.draw.rect(win, (255, 0, 0), (10, 400, 100, 20))
-        if self.rage < 100: pygame.draw.rect(win, (0, 255, 0), (10 + self.rage, 400, 100 - self.rage, 20))
+        pg.draw.rect(win, (255, 0, 0), (10, 400, 100, 20))
+        if self.rage < 100: pg.draw.rect(win, (0, 255, 0), (10 + self.rage, 400, 100 - self.rage, 20))
 
     def hit(self):
         for fb in fireballs:
-            if fb.x >= h.x - 16 and fb.x <= h.x + 16 and fb.y >= h.y - 16 and fb.y <= h.y + 16:
+            if fb.x >= self.x - 16 and fb.x <= self.x + 16 and fb.y >= self.y - 16 and fb.y <= self.y + 16:
                 fireballs.pop(fireballs.index(fb))
-                self.rage += 5
+                self.rage += 8
         for fs in fireSpirits:
-            if fs.x >= h.x - 16 and fs.x <= h.x + 16 and fs.y >= h.y - 16 and fs.y <= h.y + 16:
+            if fs.x >= self.x - 16 and fs.x <= self.x + 16 and fs.y >= self.y - 16 and fs.y <= self.y + 16:
                 fireSpirits.pop(fireSpirits.index(fs))
-                self.rage += 3
-        if len(lasers) != 0 and lasers[0].status == "shoot" and h.y >= lasers[0].y - 50 and h.y <= lasers[0].y + 15:
+                self.rage += 5
+        if len(lasers) != 0 and lasers[0].status == "shoot" and self.y >= lasers[0].y - 50 and self.y <= lasers[0].y + 15:
             self.rage += 5
-
 
 class laser(object):
     def __init__(self, y):
@@ -67,9 +52,9 @@ class laser(object):
         self.status = "ready"
     def draw(self, win):
         if self.status == "ready":
-            pygame.draw.rect(win, (255, 0, 0), (self.x, self.y, 220, 3))
+            pg.draw.rect(win, (255, 0, 0), (self.x, self.y, 220, 3))
         else:
-            win.blit(pygame.image.load('Images\Laser.png'), (self.x - 50, self.y - 150))
+            win.blit(pg.image.load('Images\Laser.png'), (self.x - 50, self.y - 150))
 
 class actB(object):
     def __init__(self):
@@ -77,13 +62,13 @@ class actB(object):
         self.y = 500
         self.status = "not chosen"
     def draw(self, win):
-        mouseX, mouseY = pygame.mouse.get_pos()
+        mouseX, mouseY = pg.mouse.get_pos()
         if mouseX >= self.x and mouseX <= self.x + 228 and mouseY >= self.y and mouseY <= self.y + 108:
             self.status = "chosen"
-            win.blit(pygame.image.load('Images\Act Chosen.png'), (self.x, self.y))
+            win.blit(pg.image.load('Images\Act Chosen.png'), (self.x, self.y))
         else:
             self.status = "not chosen"
-            win.blit(pygame.image.load('Images\Act.png'), (self.x, self.y))
+            win.blit(pg.image.load('Images\Act.png'), (self.x, self.y))
 
 class fightB(object):
     def __init__(self):
@@ -91,24 +76,24 @@ class fightB(object):
         self.y = 500
         self.status = "not chosen"
     def draw(self, win):
-        mouseX, mouseY = pygame.mouse.get_pos()
+        mouseX, mouseY = pg.mouse.get_pos()
         if mouseX >= self.x and mouseX <= self.x + 228 and mouseY >= self.y and mouseY <= self.y + 108:
             self.status = "chosen"
-            win.blit(pygame.image.load('Images\Fight Chosen.png'), (self.x, self.y))
+            win.blit(pg.image.load('Images\Fight Chosen.png'), (self.x, self.y))
         else:
             self.status = "not chosen"
-            win.blit(pygame.image.load('Images\Fight.png'), (self.x, self.y))
+            win.blit(pg.image.load('Images\Fight.png'), (self.x, self.y))
 
 class text(object):
     def __init__(self):
         self.timer = 0
     def draw(self, win):
         if act and not fight:
-            font = pygame.font.SysFont('Comic Sans MS', 30)
+            font = pg.font.SysFont('Comic Sans MS', 30)
             t = font.render('The Demon Blushes Deeply At Your Compliment.', False, (255, 255, 255))
             win.blit(t, (50, 500))
         else:
-            font = pygame.font.SysFont('Comic Sans MS', 30)
+            font = pg.font.SysFont('Comic Sans MS', 30)
             t = font.render('The Violence Increased Your Rage.', False, (255, 255, 255))
             win.blit(t, (150, 500))
             t2 = font.render('It Is Not The Way.', False, (255, 255, 255))
@@ -120,14 +105,13 @@ class fireSpirit(object):
         self.y = y
         self.timer = 0
     def draw(self, win):
-        win.blit(pygame.image.load('Images\Fire Spirit.png'), (int(self.x), int(self.y)))
+        win.blit(pg.image.load('Images\Fire Spirit.png'), (int(self.x), int(self.y)))
 
 
 def redrawGameWindow():
-    if puzzle: p.draw(win)
     if bossfight:
-        win.blit(pygame.image.load('Images\Boss Fight Screen.png'), (0, 0))
-        win.blit(pygame.image.load('Images\WrathDemon.png'), (275, 0))
+        win.blit(pg.image.load('Images\Boss Fight Screen.png'), (0, 0))
+        win.blit(pg.image.load('Images\WrathDemon.png'), (275, 0))
         h.draw(win)
         for fb in fireballs:
             fb.draw(win)
@@ -135,8 +119,8 @@ def redrawGameWindow():
         for fs in fireSpirits:
             fs.draw(win)
     if playermove:
-        win.blit(pygame.image.load('Images\Playermove Background.png'), (0, 0))
-        win.blit(pygame.image.load('Images\WrathDemon.png'), (275, 0))
+        win.blit(pg.image.load('Images\Playermove Background.png'), (0, 0))
+        win.blit(pg.image.load('Images\WrathDemon.png'), (275, 0))
         if not act and not fight:
             a.draw(win)
             f.draw(win)
@@ -145,37 +129,41 @@ def redrawGameWindow():
             t.timer += 1
     if end and not playermove:
         if h.rage > 100:
-            win.blit(pygame.image.load('Images\Bad Ending BG.png'), (0, 0))
-            font = pygame.font.SysFont('Comic Sans MS', 30)
+            win.blit(pg.image.load('Images\Bad Ending BG.png'), (0, 0))
+            font = pg.font.SysFont('Comic Sans MS', 30)
             txt = font.render('You Have Been Consumed By Your Rage.', False, (255, 255, 255))
             txt2 = font.render('GAME OVER', False, (255, 255, 255))
             win.blit(txt, (150, 400))
             win.blit(txt2, (300, 500))
         elif compliment >= 2:
-            win.blit(pygame.image.load('Images\Weird Ending ish.png'), (0, 0))
-            win.blit(pygame.image.load('Images\WrathDemon.png'), (200, 300))
-            win.blit(pygame.image.load('Images\Main Character Front.png'), (500, 400))
-            font = pygame.font.SysFont('Comic Sans MS', 25)
+            win.blit(pg.image.load('Images\Weird Ending ish.png'), (0, 0))
+            win.blit(pg.image.load('Images\WrathDemon.png'), (200, 300))
+            win.blit(pg.image.load('Images\Main Character Front.png'), (500, 400))
+            font = pg.font.SysFont('Comic Sans MS', 25)
             txt = font.render('After Your Compliments, The Demon Falls In Love With You.', False, (255, 255, 255))
             txt2 = font.render('You Live Happily Ever After. THE END', False, (255, 255, 255))
             win.blit(txt, (30, 600))
             win.blit(txt2, (120, 700))
         else:
-            font = pygame.font.SysFont('Comic Sans MS', 25)
+            font = pg.font.SysFont('Comic Sans MS', 25)
             txt = font.render('CONGRADULATIONS! You Survived The Wrath Demon.', False, (255, 255, 255))
             txt2 = font.render('THE END.', False, (255, 255, 255))
             win.blit(txt, (70, 400))
             win.blit(txt2, (350, 500))
 
-    pygame.display.update()
+    pg.display.update()
 
 global compliment
 compliment = 0
+global act
 act = False
+global fight
 fight = False
+global bossfight
 bossfight = True
+global playermove
 playermove = False
-puzzle = False
+global end
 end = False
 temp = 0
 global fireballs
@@ -184,51 +172,43 @@ global lasers
 lasers = []
 global fireSpirits
 fireSpirits = []
+global a
+a = actB()
+global f
+f = fightB()
+global stage
 stage = 1
-p = player(450, 300, "s")
+global h
 h = heart(384, 574)
+global t
 t = text()
 global tick
 tick = 0
 # game loop
+global running
 running = True
 while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
             running = False
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_s] and puzzle:
-        p.y += p.vel
-        p.move = "s"
-    elif keys[pygame.K_s] and bossfight and h.y <= 657:
+    keys = pg.key.get_pressed()
+    if keys[pg.K_s] and bossfight and h.y <= 657:
         h.y += h.vel
-    if keys[pygame.K_d] and puzzle:
-        p.x += p.vel
-        p.move = "d"
-    elif keys[pygame.K_d] and bossfight and h.x <= 473:
+    if keys[pg.K_d] and bossfight and h.x <= 473:
         h.x += h.vel
-    if keys[pygame.K_a] and puzzle:
-        p.x -= p.vel
-        p.move = "a"
-    elif keys[pygame.K_a] and bossfight and h.x >= 295:
+    if keys[pg.K_a] and bossfight and h.x >= 295:
         h.x -= h.vel
-    if keys[pygame.K_w] and puzzle:
-        p.y -= p.vel
-        p.move = "w"
-    elif keys[pygame.K_w] and bossfight and h.y >= 480:
+    if keys[pg.K_w] and bossfight and h.y >= 480:
         h.y -= h.vel
-    if playermove and pygame.mouse.get_pressed()[0] and a.status == "chosen":
+    if playermove and pg.mouse.get_pressed()[0] and a.status == "chosen":
         act = True
         compliment += 1
-    elif playermove and pygame.mouse.get_pressed()[0] and f.status == "chosen":
+    elif playermove and pg.mouse.get_pressed()[0] and f.status == "chosen":
         fight = True
         h.rage += 5
 
-
-
     if bossfight and stage <= 3:
-        p.move = "hidden"
         if stage == 1:
             if temp != 50:
                 y = random.randint(470, 647)
@@ -276,10 +256,6 @@ while running:
         bossfight = False
         playermove = False
 
-    if playermove and not fight and not act:
-        a = actB()
-        f = fightB()
-
     for fs in fireSpirits:
         velx = random.randint(1, 10)
         vely = random.randint(1, 10)
@@ -301,4 +277,4 @@ while running:
     h.hit()
     win.fill((0, 0, 0))
     redrawGameWindow()
-pygame.quit()
+pg.quit()
