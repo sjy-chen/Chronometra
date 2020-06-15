@@ -83,6 +83,7 @@ class Game:
             self.update()
             self.draw()
 
+
     def quit(self):
         pg.quit()
         sys.exit()
@@ -93,7 +94,7 @@ class Game:
         self.camera.update(self.player)
         if self.next_level:
             self.playing = False
-            pg.event.wait()
+
         green_hit = pg.sprite.spritecollide(self.player, self.green, False)
         if green_hit:
             if self.map == self.imgs['stone']:
@@ -155,6 +156,9 @@ class Game:
                 else:
                     status = 'Place all the ores!'
                     print(status)
+        if self.next_level:
+            self.new()
+            self.next_level = False
 
     # def draw_grid(self):
     #     for x in range(0, WIDTH, TILESIZE):
@@ -202,12 +206,9 @@ class Game:
 
 # create the game object
 g = Game(False)
+g.new()
 g.show_start_screen()
 # g.show_load_screen()
 while True:
-    g.new()
-    g.run()
-    g.show_load_screen()
-    g.new()
     g.run()
 
