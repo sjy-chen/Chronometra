@@ -1,5 +1,6 @@
 import pygame, random, math
 
+
 pygame.init()
 global win
 win = pygame.display.set_mode((800, 800))
