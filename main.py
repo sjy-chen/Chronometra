@@ -37,7 +37,7 @@ class Game:
         self.player_img_back = pg.image.load(path.join(self.img_folder, 'Main Character Back.png')).convert_alpha()
         self.player_img_left = pg.image.load(path.join(self.img_folder, 'Main Character Left.png')).convert_alpha()
         self.player_img_right = pg.image.load(path.join(self.img_folder, 'Main Character Right.png')).convert_alpha()
-        pg.mixer.music.load(path.join(self.music_folder, BG_MUSIC))
+        pg.mixer.music.load(path.join(self.music_folder, 'stone.wav'))
 
     def new(self):
         # initialize all variables and do all the setup for a new game
