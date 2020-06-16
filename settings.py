@@ -21,3 +21,4 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 
 # Player Settings
 PLAYER_SPEED = 300
+

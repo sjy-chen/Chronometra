@@ -31,10 +31,13 @@ class Game:
         self.game_folder = path.dirname(__file__)
         self.img_folder = path.join(self.game_folder, 'img')
         self.map_folder = path.join(self.game_folder, 'maps')
+        self.music_folder = path.join(self.game_folder, 'music')
+        self.snd_folder = path.join(self.game_folder, 'snd')
         self.player_img_front = pg.image.load(path.join(self.img_folder, 'Main Character Front.png')).convert_alpha()
         self.player_img_back = pg.image.load(path.join(self.img_folder, 'Main Character Back.png')).convert_alpha()
         self.player_img_left = pg.image.load(path.join(self.img_folder, 'Main Character Left.png')).convert_alpha()
         self.player_img_right = pg.image.load(path.join(self.img_folder, 'Main Character Right.png')).convert_alpha()
+        pg.mixer.music.load(path.join(self.music_folder, BG_MUSIC))
 
     def new(self):
         # initialize all variables and do all the setup for a new game
@@ -80,6 +83,8 @@ class Game:
     def run(self):
         # game loop - set self.playing = False to end the game
         self.playing = True
+        pg.mixer.music.play(-1, 0.0)
+        pg.mixer.music.set_volume(0.25)
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
@@ -161,6 +166,9 @@ class Game:
 
         if self.next_level:
             self.new()
+            pg.mixer.music.load(path.join(self.music_folder, 'Lava.ogg'))
+            pg.mixer.music.play(-1, 0.0)
+            pg.mixer.music.set_volume(0.25)
             self.next_level = False
 
         if self.bf:
