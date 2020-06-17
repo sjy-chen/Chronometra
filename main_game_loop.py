@@ -1,5 +1,6 @@
 import pygame as pg
 import random
+from os import path
 import math
 
 pg.init()
@@ -15,7 +16,7 @@ class fireball(object):
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.vel = 10
+        self.vel = 1
 
     def draw(self, win):
         win.blit(pg.image.load('Images\Fire Ball Right.png'), (self.x, self.y))
@@ -124,7 +125,7 @@ def redrawGameWindow():
         if not act and not fight:
             a.draw(win)
             f.draw(win)
-        elif t.timer < 30:
+        elif t.timer < 100:
             t.draw(win)
             t.timer += 1
     if end and not playermove:
@@ -187,6 +188,11 @@ tick = 0
 # game loop
 global running
 running = True
+game_folder = path.dirname(__file__)
+music_folder = path.join(game_folder, 'music')
+pg.mixer.music.load(path.join(music_folder, 'Through the Fire and the Flames.mp3'))
+pg.mixer.music.play(-1, 0.0)
+pg.mixer.music.set_volume(0.25)
 while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -225,9 +231,9 @@ while running:
                 lasers.append(laser(y))
                 temp += 1
             if len(lasers) != 0:
-                if lasers[0].timer == 10:
+                if lasers[0].timer == 20:
                     lasers[0].status = "shoot"
-                elif lasers[0].timer == 20:
+                elif lasers[0].timer == 60:
                     lasers.pop(0)
                 if len(lasers) != 0: lasers[0].timer += 1
             else:
@@ -257,8 +263,8 @@ while running:
         playermove = False
 
     for fs in fireSpirits:
-        velx = random.randint(1, 10)
-        vely = random.randint(1, 10)
+        velx = random.randint(0.1, 1)
+        vely = random.randint(0.1, 1)
         fs.x += velx
         fs.y += vely
     for fb in fireballs:
