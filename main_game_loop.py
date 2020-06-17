@@ -147,7 +147,7 @@ def redrawGameWindow():
             win.blit(txt2, (120, 700))
         else:
             font = pg.font.SysFont('Comic Sans MS', 25)
-            txt = font.render('CONGRADULATIONS! You Survived The Wrath Demon.', False, (255, 255, 255))
+            txt = font.render('CONGRATULATIONS! You Survived The Wrath Demon.', False, (255, 255, 255))
             txt2 = font.render('THE END.', False, (255, 255, 255))
             win.blit(txt, (70, 400))
             win.blit(txt2, (350, 500))
@@ -263,8 +263,8 @@ while running:
         playermove = False
 
     for fs in fireSpirits:
-        velx = random.randint(0.1, 1)
-        vely = random.randint(0.1, 1)
+        velx = random.randint(0, 1)
+        vely = random.randint(0, 1)
         fs.x += velx
         fs.y += vely
     for fb in fireballs:

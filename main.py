@@ -37,7 +37,11 @@ class Game:
         self.player_img_back = pg.image.load(path.join(self.img_folder, 'Main Character Back.png')).convert_alpha()
         self.player_img_left = pg.image.load(path.join(self.img_folder, 'Main Character Left.png')).convert_alpha()
         self.player_img_right = pg.image.load(path.join(self.img_folder, 'Main Character Right.png')).convert_alpha()
-        pg.mixer.music.load(path.join(self.music_folder, 'stone.wav'))
+        self.collect_sound = pg.mixer.Sound(path.join(self.snd_folder, 'Collect_Ore_Chime.wav'))
+        self.collect_sound.set_volume(0.3)
+        self.place_sound = pg.mixer.Sound(path.join(self.snd_folder, 'Ore_Drop_Place.wav'))
+        self.place_sound.set_volume(0.5)
+        pg.mixer.music.load(path.join(self.music_folder, 'Stone.ogg'))
 
     def new(self):
         # initialize all variables and do all the setup for a new game
@@ -84,7 +88,7 @@ class Game:
         # game loop - set self.playing = False to end the game
         self.playing = True
         pg.mixer.music.play(-1, 0.0)
-        pg.mixer.music.set_volume(0.25)
+        pg.mixer.music.set_volume(0.1)
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
@@ -104,46 +108,62 @@ class Game:
         green_hit = pg.sprite.spritecollide(self.player, self.green, False)
         if green_hit:
             if self.map == self.imgs['stone']:
-                status = 'Green ore collected.'
-                print(status)
-                self.green_collected = True
+                if not self.green_collected:
+                    status = 'Green ore collected.'
+                    print(status)
+                    self.collect_sound.play()
+                    self.green_collected = True
             elif self.map == self.imgs['lava']:
-                status = 'Green ore placed.'
-                print(status)
-                self.green_placed = True
+                if not self.green_placed:
+                    status = 'Green ore placed.'
+                    print(status)
+                    self.place_sound.play()
+                    self.green_placed = True
 
         purple_hit = pg.sprite.spritecollide(self.player, self.purple, False)
         if purple_hit:
             if self.map == self.imgs['stone']:
-                status = 'Purple ore collected.'
-                print(status)
-                self.purple_collected = True
+                if not self.purple_collected:
+                    status = 'Purple ore collected.'
+                    print(status)
+                    self.collect_sound.play()
+                    self.purple_collected = True
             elif self.map == self.imgs['lava']:
-                status = 'Purple ore placed.'
-                print(status)
-                self.purple_placed = True
+                if not self.purple_placed:
+                    status = 'Purple ore placed.'
+                    print(status)
+                    self.place_sound.play()
+                    self.purple_placed = True
 
         orange_hit = pg.sprite.spritecollide(self.player, self.orange, False)
         if orange_hit:
             if self.map == self.imgs['stone']:
-                status = 'Orange ore collected.'
-                print(status)
-                self.orange_collected = True
+                if not self.orange_collected:
+                    status = 'Orange ore collected.'
+                    print(status)
+                    self.collect_sound.play()
+                    self.orange_collected = True
             elif self.map == self.imgs['lava']:
-                status = 'Orange ore placed.'
-                print(status)
-                self.orange_placed = True
+                if not self.orange_placed:
+                    status = 'Orange ore placed.'
+                    print(status)
+                    self.place_sound.play()
+                    self.orange_placed = True
 
         yellow_hit = pg.sprite.spritecollide(self.player, self.yellow, False)
         if yellow_hit:
             if self.map == self.imgs['stone']:
-                status = 'Yellow ore collected.'
-                print(status)
-                self.yellow_collected = True
+                if not self.yellow_collected:
+                    status = 'Yellow ore collected.'
+                    print(status)
+                    self.collect_sound.play()
+                    self.yellow_collected = True
             elif self.map == self.imgs['lava']:
-                status = 'Yellow ore placed.'
-                print(status)
-                self.yellow_placed = True
+                if not self.yellow_placed:
+                    status = 'Yellow ore placed.'
+                    print(status)
+                    self.place_sound.play()
+                    self.yellow_placed = True
 
         bossfight = pg.sprite.spritecollide(self.player, self.bossfight, False)
         if bossfight:
@@ -166,6 +186,7 @@ class Game:
 
         if self.next_level:
             self.new()
+            pg.mixer.music.fadeout(1000)
             pg.mixer.music.load(path.join(self.music_folder, 'Lava.ogg'))
             pg.mixer.music.play(-1, 0.0)
             pg.mixer.music.set_volume(0.25)
