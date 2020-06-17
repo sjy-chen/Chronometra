@@ -56,7 +56,6 @@ class Player(pg.sprite.Sprite):
     def update(self):
         self.get_keys()
         self.pos += self.vel * self.game.dt
-        # print(self.pos)
         self.rect.x = self.pos.x
         self.collide_with_walls('x')
         self.rect.y = self.pos.y

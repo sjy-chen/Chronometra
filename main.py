@@ -58,12 +58,6 @@ class Game:
             self.map = self.imgs['lava']
         elif not self.next_level:
             self.map = self.imgs['stone']
-        if self.map == self.imgs['stone']:
-            maps = 'Stone'
-            print(maps)
-        elif self.map == self.imgs['lava']:
-            maps = 'Lava'
-            print(maps)
         self.map_img = self.map.make_map()
         self.map_rect = self.map_img.get_rect()
         for tile_object in self.map.tmxdata.objects:
@@ -185,6 +179,7 @@ class Game:
                     print(status)
 
         if self.next_level:
+            self.show_load_screen()
             self.new()
             pg.mixer.music.fadeout(1000)
             pg.mixer.music.load(path.join(self.music_folder, 'Lava.ogg'))
@@ -217,9 +212,6 @@ class Game:
     def show_start_screen(self):
         pass
 
-    def show_go_screen(self):
-        pass
-
     def show_load_screen(self):
         background = pg.image.load(path.join(path.join(path.dirname(__file__), 'img'), 'Loading.png')).convert_alpha()
         background_rect = background.get_rect()
@@ -239,6 +231,6 @@ class Game:
 g = Game()
 g.new()
 g.show_start_screen()
-# g.show_load_screen()
+g.show_load_screen()
 while not g.bf:
     g.run()

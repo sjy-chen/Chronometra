@@ -38,10 +38,12 @@ class heart(object):
             if fb.x >= self.x - 16 and fb.x <= self.x + 16 and fb.y >= self.y - 16 and fb.y <= self.y + 16:
                 fireballs.pop(fireballs.index(fb))
                 self.rage += 8
+                laser_sound.play()
         for fs in fireSpirits:
             if fs.x >= self.x - 16 and fs.x <= self.x + 16 and fs.y >= self.y - 16 and fs.y <= self.y + 16:
                 fireSpirits.pop(fireSpirits.index(fs))
                 self.rage += 5
+                laser_sound.play()
         if len(lasers) != 0 and lasers[0].status == "shoot" and self.y >= lasers[0].y - 50 and self.y <= lasers[0].y + 15:
             self.rage += 5
 
@@ -130,27 +132,27 @@ def redrawGameWindow():
             t.timer += 1
     if end and not playermove:
         if h.rage > 100:
-            win.blit(pg.image.load('Images\Bad Ending BG.png'), (0, 0))
+            win.blit(pg.image.load('Images\Bad Ending BG.jpg'), (0, 0))
             font = pg.font.SysFont('Comic Sans MS', 30)
             txt = font.render('You Have Been Consumed By Your Rage.', False, (255, 255, 255))
-            txt2 = font.render('GAME OVER', False, (255, 255, 255))
-            win.blit(txt, (150, 400))
+            txt2 = font.render('GAME OVER.', False, (255, 255, 255))
+            win.blit(txt, (125, 400))
             win.blit(txt2, (300, 500))
         elif compliment >= 2:
             win.blit(pg.image.load('Images\Weird Ending ish.png'), (0, 0))
             win.blit(pg.image.load('Images\WrathDemon.png'), (200, 300))
-            win.blit(pg.image.load('Images\Main Character Front.png'), (500, 400))
+            win.blit(pg.image.load('Images\Main Character Front.png'), (500, 500))
             font = pg.font.SysFont('Comic Sans MS', 25)
             txt = font.render('After Your Compliments, The Demon Falls In Love With You.', False, (255, 255, 255))
-            txt2 = font.render('You Live Happily Ever After. THE END', False, (255, 255, 255))
-            win.blit(txt, (30, 600))
-            win.blit(txt2, (120, 700))
+            txt2 = font.render('You Live Happily Ever After. THE END.', False, (255, 255, 255))
+            win.blit(txt, (50, 600))
+            win.blit(txt2, (150, 700))
         else:
             font = pg.font.SysFont('Comic Sans MS', 25)
             txt = font.render('CONGRATULATIONS! You Survived The Wrath Demon.', False, (255, 255, 255))
             txt2 = font.render('THE END.', False, (255, 255, 255))
-            win.blit(txt, (70, 400))
-            win.blit(txt2, (350, 500))
+            win.blit(txt, (70, 300))
+            win.blit(txt2, (350, 450))
 
     pg.display.update()
 
@@ -190,11 +192,12 @@ global running
 running = True
 game_folder = path.dirname(__file__)
 music_folder = path.join(game_folder, 'music')
-sound_folder = path.join(game_folder, 'sounds')
+sound_folder = path.join(game_folder, 'snd')
 pg.mixer.music.load(path.join(music_folder, 'Through the Fire and the Flames.mp3'))
 pg.mixer.music.play(-1, 0.0)
 pg.mixer.music.set_volume(0.25)
-laser_sound = pg.mixer.Sound(path.join(sound_folder, 'Pew Pew.wav'))
+global laser_sound
+laser_sound = pg.mixer.Sound(path.join(sound_folder, 'Laser.wav'))
 laser_sound.set_volume(0.25)
 while running:
     for event in pg.event.get():
