@@ -7,12 +7,14 @@ from tilemap import *
 import random
 
 class Game:
-    def __init__(self, next_level):
+    def __init__(self):
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         pg.key.set_repeat(500, 100)
+        icon = pg.image.load('Images\Chronometra Icon.png')
+        pg.display.set_icon(icon)
         self.load_data()
         self.orange_collected = False
         self.purple_collected = False
@@ -22,16 +24,20 @@ class Game:
         self.purple_placed = False
         self.yellow_placed = False
         self.green_placed = False
-        self.next_level = next_level
+        self.next_level = False
+        self.bf = False
 
     def load_data(self):
         self.game_folder = path.dirname(__file__)
         self.img_folder = path.join(self.game_folder, 'img')
         self.map_folder = path.join(self.game_folder, 'maps')
+        self.music_folder = path.join(self.game_folder, 'music')
+        self.snd_folder = path.join(self.game_folder, 'snd')
         self.player_img_front = pg.image.load(path.join(self.img_folder, 'Main Character Front.png')).convert_alpha()
         self.player_img_back = pg.image.load(path.join(self.img_folder, 'Main Character Back.png')).convert_alpha()
         self.player_img_left = pg.image.load(path.join(self.img_folder, 'Main Character Left.png')).convert_alpha()
         self.player_img_right = pg.image.load(path.join(self.img_folder, 'Main Character Right.png')).convert_alpha()
+        pg.mixer.music.load(path.join(self.music_folder, 'stone.wav'))
 
     def new(self):
         # initialize all variables and do all the setup for a new game
@@ -77,12 +83,13 @@ class Game:
     def run(self):
         # game loop - set self.playing = False to end the game
         self.playing = True
+        pg.mixer.music.play(-1, 0.0)
+        pg.mixer.music.set_volume(0.25)
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
             self.update()
             self.draw()
-
 
     def quit(self):
         pg.quit()
@@ -94,7 +101,6 @@ class Game:
         self.camera.update(self.player)
         if self.next_level:
             self.playing = False
-
         green_hit = pg.sprite.spritecollide(self.player, self.green, False)
         if green_hit:
             if self.map == self.imgs['stone']:
@@ -153,18 +159,22 @@ class Game:
                 if self.yellow_placed and self.orange_placed and self.purple_placed and self.green_placed:
                     status = 'Boss Fight!'
                     print(status)
+                    self.bf = True
                 else:
                     status = 'Place all the ores!'
                     print(status)
+
         if self.next_level:
             self.new()
+            pg.mixer.music.load(path.join(self.music_folder, 'Lava.ogg'))
+            pg.mixer.music.play(-1, 0.0)
+            pg.mixer.music.set_volume(0.25)
             self.next_level = False
 
-    # def draw_grid(self):
-    #     for x in range(0, WIDTH, TILESIZE):
-    #         pg.draw.line(self.screen, LIGHTGREY, (x,0), (x, HEIGHT))
-    #     for y in range(0, HEIGHT, TILESIZE):
-    #         pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
+        if self.bf:
+            exec(open('main_game_loop.py').read())
+            self.quit()
+
 
     def draw(self):
         # self.screen.fill(BGCOLOR)
@@ -205,12 +215,9 @@ class Game:
                     waiting = False
 
 # create the game object
-g = Game(False)
+g = Game()
 g.new()
 g.show_start_screen()
 # g.show_load_screen()
-while True:
+while not g.bf:
     g.run()
-
-
-

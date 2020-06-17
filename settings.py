@@ -12,7 +12,7 @@ YELLOW = (255, 255, 255)
 WIDTH = 720
 HEIGHT = 480
 FPS = 60
-TITLE = "Tilemap Demo"
+TITLE = "Chronometra"
 BGCOLOR = DARKGREY
 
 TILESIZE = 16
@@ -21,3 +21,4 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 
 # Player Settings
 PLAYER_SPEED = 300
+
