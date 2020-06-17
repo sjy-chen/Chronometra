@@ -190,9 +190,12 @@ global running
 running = True
 game_folder = path.dirname(__file__)
 music_folder = path.join(game_folder, 'music')
+sound_folder = path.join(game_folder, 'sounds')
 pg.mixer.music.load(path.join(music_folder, 'Through the Fire and the Flames.mp3'))
 pg.mixer.music.play(-1, 0.0)
 pg.mixer.music.set_volume(0.25)
+laser_sound = pg.mixer.Sound(path.join(sound_folder, 'Pew Pew.wav'))
+laser_sound.set_volume(0.25)
 while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -233,6 +236,7 @@ while running:
             if len(lasers) != 0:
                 if lasers[0].timer == 20:
                     lasers[0].status = "shoot"
+                    laser_sound.play()
                 elif lasers[0].timer == 60:
                     lasers.pop(0)
                 if len(lasers) != 0: lasers[0].timer += 1
