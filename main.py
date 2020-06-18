@@ -210,29 +210,9 @@ class Game:
                     self.quit()
 
     def menu(self):
-        background = pg.image.load('Images\Chronometra menu.png')
-        pg.display.set_mode((768, 368))
-        self.screen.blit(background, (0, 0))
-        waiting = True
-        while waiting:
-            play = pg.image.load('img\playB.png')
-            chosen = False
-            mouseX, mouseY = pg.mouse.get_pos()
-            if mouseX >= 120 and mouseX <= 248 and mouseY >= 198 and mouseY <= 120:
-                play = pg.image.load('img\playB Chosen.png')
-                chosen = True
-            self.screen.blit(play, (320, 145))
-            pg.display.flip()
-            if pg.mouse.get_pressed()[0] and chosen:
-                waiting = False
-
-
-
-
-    def show_load_screen(self):
-        background = pg.image.load(path.join(path.join(path.dirname(__file__), 'img'), 'Loading.png')).convert_alpha()
+        background = pg.image.load('Images\Chronometra_Start.png')
         background_rect = background.get_rect()
-        pg.display.set_mode((WIDTH, HEIGHT)).blit(background, background_rect)
+        pg.display.set_mode((768, 368)).blit(background, background_rect)
         pg.display.flip()
         pg.event.wait()
         waiting = True
@@ -243,6 +223,22 @@ class Game:
                     pg.quit()
                 if event.type == pg.KEYUP or event.type == pg.MOUSEBUTTONDOWN:
                     waiting = False
+
+    def show_load_screen(self):
+        background = pg.image.load(path.join(path.join(path.dirname(__file__), 'img'), 'Loading.png')).convert_alpha()
+        background_rect = background.get_rect()
+        pg.display.set_mode((WIDTH, HEIGHT)).blit(background, background_rect)
+        pg.display.flip()
+        pg.event.wait()
+        temp = 0
+        while temp <= 50:
+            pg.time.Clock().tick(FPS)
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                if event.type == pg.KEYUP or event.type == pg.MOUSEBUTTONDOWN:
+                    temp = 100
+            temp+=1
 
 # create the game object
 g = Game()
