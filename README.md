@@ -25,7 +25,7 @@ Chronometra was inspired largely in part by Undertale and various other RPGs, wh
 can be seen in Chronometra's art and gameplay.
 
 Chronometra was coded with PyGame, and uses PyTMX to load maps. The maps and the 
-obstacles were made using Tiled.
+obstacles were made using Tiled, while the graphics were made in Photoshop.
 
 #### Python Concepts Used
 - Classes and functions are used to create various parts of the game.
@@ -134,7 +134,6 @@ Depending on RB's choices, there will be different endings.
 
 Here is a video demonstrating Chronometra's gameplay.
 
-https://www.youtube.com/watch?v=2YgqX8nKRZ0
+https://www.youtube.com/watch?v=Ct9WFiI91SQ
 
 [Back To The Top](#Chronometra)
-

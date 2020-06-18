@@ -150,7 +150,7 @@ def redrawGameWindow():
         else:
             win.blit(pg.image.load('Images\Best Ending BG.png'), (0, 0))
             font = pg.font.SysFont('Comic Sans MS', 25)
-            txt = font.render('CONGRATULATIONS! You Survived The Wrath Demon.', False, (255, 255, 255))
+            txt = font.render('CONGRATULATIONS! You Defeated The Wrath Demon.', False, (255, 255, 255))
             txt2 = font.render('THE END.', False, (255, 255, 255))
             win.blit(txt, (70, 600))
             win.blit(txt2, (350, 700))
@@ -200,8 +200,9 @@ pg.mixer.music.set_volume(0.25)
 global laser_sound
 laser_sound = pg.mixer.Sound(path.join(sound_folder, 'Laser.wav'))
 laser_sound.set_volume(0.25)
+global hit_sound
 hit_sound = pg.mixer.Sound(path.join(sound_folder, 'hit sound.wav'))
-hit_sound.set_volume(0.25)
+hit_sound.set_volume(0.45)
 while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -301,5 +302,4 @@ while running:
     h.hit()
     win.fill((0, 0, 0))
     redrawGameWindow()
-    print(compliment)
 pg.quit()
