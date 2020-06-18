@@ -21,17 +21,17 @@ featuring original art and gameplay. In the game, players play as RB, who must c
 the four ores of Metrochron and place them into the altars of the Mountain Locck before 
 summoning the Demon of Wrath and defeating him once and for all.
 
-Chronometra was inspired largely in part by Undertale and various other RPGS, whose influence
+Chronometra was inspired largely in part by Undertale and various other RPGs, whose influence
 can be seen in Chronometra's art and gameplay.
 
 Chronometra was coded with PyGame, and uses PyTMX to load maps. The maps and the 
 obstacles were made using Tiled.
 
 #### Python Concepts Used
-- Classes and functions are used to create various parts of the game
+- Classes and functions are used to create various parts of the game.
 - Integers, floats, strings, lists, and dictionaries are used to keep 
-track of different types of data
-- Conditionals and loops are used throughout to enrich gameplay 
+track of different types of data.
+- Conditionals and loops are used throughout to enrich gameplay. 
 
 [Back To The Top](#Chronometra)
 
@@ -45,7 +45,7 @@ To run the game, the following packages need to be installed.
 - PyTMX (https://pypi.org/project/PyTMX/)
 
 
-They can be simply installed by using the command prompt and the following commands.
+They can be installed by using the command prompt and the following commands.
 
 ```
 pip install pygame
