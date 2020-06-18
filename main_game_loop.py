@@ -114,7 +114,7 @@ class fireSpirit(object):
 def redrawGameWindow():
     if bossfight:
         win.blit(pg.image.load('Images\Boss Fight Screen.png'), (0, 0))
-        win.blit(pg.image.load('Images\WrathDemon.png'), (275, 0))
+        win.blit(pg.image.load('Images\WrathDemon.png'), (275, 50))
         h.draw(win)
         for fb in fireballs:
             fb.draw(win)
@@ -148,11 +148,12 @@ def redrawGameWindow():
             win.blit(txt, (50, 600))
             win.blit(txt2, (150, 700))
         else:
+            win.blit(pg.image.load('Images\Best Ending BG.png'), (0, 0))
             font = pg.font.SysFont('Comic Sans MS', 25)
             txt = font.render('CONGRATULATIONS! You Survived The Wrath Demon.', False, (255, 255, 255))
             txt2 = font.render('THE END.', False, (255, 255, 255))
-            win.blit(txt, (70, 300))
-            win.blit(txt2, (350, 450))
+            win.blit(txt, (70, 600))
+            win.blit(txt2, (350, 700))
 
     pg.display.update()
 
