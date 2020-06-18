@@ -209,8 +209,25 @@ class Game:
                 if event.key == pg.K_ESCAPE:
                     self.quit()
 
-    def show_start_screen(self):
-        pass
+    def menu(self):
+        background = pg.image.load('Images\Chronometra menu.png')
+        pg.display.set_mode((768, 368))
+        self.screen.blit(background, (0, 0))
+        waiting = True
+        while waiting:
+            play = pg.image.load('img\playB.png')
+            chosen = False
+            mouseX, mouseY = pg.mouse.get_pos()
+            if mouseX >= 120 and mouseX <= 248 and mouseY >= 198 and mouseY <= 120:
+                play = pg.image.load('img\playB Chosen.png')
+                chosen = True
+            self.screen.blit(play, (320, 145))
+            pg.display.flip()
+            if pg.mouse.get_pressed()[0] and chosen:
+                waiting = False
+
+
+
 
     def show_load_screen(self):
         background = pg.image.load(path.join(path.join(path.dirname(__file__), 'img'), 'Loading.png')).convert_alpha()
@@ -230,7 +247,7 @@ class Game:
 # create the game object
 g = Game()
 g.new()
-g.show_start_screen()
+g.menu()
 g.show_load_screen()
 while not g.bf:
     g.run()
