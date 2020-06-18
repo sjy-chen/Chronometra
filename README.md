@@ -134,8 +134,7 @@ Depending on RB's choices, there will be different endings.
 
 Here is a video demonstrating Chronometra's gameplay.
 
-[![Gameplay Demo](https://img.youtube.com/vi/2YgqX8nKRZ0/0.jpg)]
-(https://www.youtube.com/watch?v=2YgqX8nKRZ0)
+https://www.youtube.com/watch?v=2YgqX8nKRZ0
 
 [Back To The Top](#Chronometra)
 
