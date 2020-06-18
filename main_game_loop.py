@@ -213,6 +213,14 @@ while running:
         h.x -= h.vel
     if keys[pg.K_w] and bossfight and h.y >= 480:
         h.y -= h.vel
+    if keys[pg.K_DOWN] and bossfight and h.y <= 657:
+        h.y += h.vel
+    if keys[pg.K_RIGHT] and bossfight and h.x <= 473:
+        h.x += h.vel
+    if keys[pg.K_LEFT] and bossfight and h.x >= 295:
+        h.x -= h.vel
+    if keys[pg.K_UP] and bossfight and h.y >= 480:
+        h.y -= h.vel
     if playermove and pg.mouse.get_pressed()[0] and a.status == "chosen":
         act = True
         compliment += 1
