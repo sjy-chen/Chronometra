@@ -222,7 +222,7 @@ class Game:
                 play = pg.image.load('img\playB Chosen.png')
                 chosen = True
             self.screen.blit(play, (320, 145))
-            pg.display.flip()
+            pg.display.update()
             if pg.mouse.get_pressed()[0] and chosen:
                 waiting = False
 

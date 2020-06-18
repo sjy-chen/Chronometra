@@ -38,12 +38,12 @@ class heart(object):
             if fb.x >= self.x - 16 and fb.x <= self.x + 16 and fb.y >= self.y - 16 and fb.y <= self.y + 16:
                 fireballs.pop(fireballs.index(fb))
                 self.rage += 8
-                laser_sound.play()
+                hit_sound.play()
         for fs in fireSpirits:
             if fs.x >= self.x - 16 and fs.x <= self.x + 16 and fs.y >= self.y - 16 and fs.y <= self.y + 16:
                 fireSpirits.pop(fireSpirits.index(fs))
                 self.rage += 5
-                laser_sound.play()
+                hit_sound.play()
         if len(lasers) != 0 and lasers[0].status == "shoot" and self.y >= lasers[0].y - 50 and self.y <= lasers[0].y + 15:
             self.rage += 5
 
@@ -127,9 +127,9 @@ def redrawGameWindow():
         if not act and not fight:
             a.draw(win)
             f.draw(win)
-        elif t.timer < 100:
-            t.draw(win)
-            t.timer += 1
+        elif t.timer < 30:
+                t.draw(win)
+                t.timer += 1
     if end and not playermove:
         if h.rage > 100:
             win.blit(pg.image.load('Images\Bad Ending BG.jpg'), (0, 0))
@@ -138,7 +138,7 @@ def redrawGameWindow():
             txt2 = font.render('GAME OVER.', False, (255, 255, 255))
             win.blit(txt, (125, 400))
             win.blit(txt2, (300, 500))
-        elif compliment >= 2:
+        elif compliment == 2:
             win.blit(pg.image.load('Images\Weird Ending ish.png'), (0, 0))
             win.blit(pg.image.load('Images\WrathDemon.png'), (200, 300))
             win.blit(pg.image.load('Images\Main Character Front.png'), (500, 500))
@@ -163,9 +163,9 @@ act = False
 global fight
 fight = False
 global bossfight
-bossfight = True
+bossfight = False
 global playermove
-playermove = False
+playermove = True
 global end
 end = False
 temp = 0
@@ -199,6 +199,8 @@ pg.mixer.music.set_volume(0.25)
 global laser_sound
 laser_sound = pg.mixer.Sound(path.join(sound_folder, 'Laser.wav'))
 laser_sound.set_volume(0.25)
+hit_sound = pg.mixer.Sound(path.join(sound_folder, 'hit sound.wav'))
+hit_sound.set_volume(0.25)
 while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -221,10 +223,10 @@ while running:
         h.x -= h.vel
     if keys[pg.K_UP] and bossfight and h.y >= 480:
         h.y -= h.vel
-    if playermove and pg.mouse.get_pressed()[0] and a.status == "chosen":
+    if playermove and pg.mouse.get_pressed()[0] and a.status == "chosen" and t.timer == 0:
         act = True
         compliment += 1
-    elif playermove and pg.mouse.get_pressed()[0] and f.status == "chosen":
+    elif playermove and pg.mouse.get_pressed()[0] and f.status == "chosen" and t.timer == 0:
         fight = True
         h.rage += 5
 
@@ -288,7 +290,7 @@ while running:
         else:
             fireballs.pop(fireballs.index(fb))
 
-    if t.timer == 30:
+    if t.timer >= 30:
         bossfight = True
         playermove = False
         t.timer = 0
@@ -298,4 +300,5 @@ while running:
     h.hit()
     win.fill((0, 0, 0))
     redrawGameWindow()
+    print(compliment)
 pg.quit()
