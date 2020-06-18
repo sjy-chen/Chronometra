@@ -163,9 +163,9 @@ act = False
 global fight
 fight = False
 global bossfight
-bossfight = False
+bossfight = True
 global playermove
-playermove = True
+playermove = False
 global end
 end = False
 temp = 0
