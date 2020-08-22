@@ -29,7 +29,7 @@ class Game:
 
     def load_data(self):
         self.game_folder = path.dirname(__file__)
-        self.img_folder = path.join(self.game_folder, 'img')
+        self.img_folder = path.join(self.game_folder, 'Images')
         self.map_folder = path.join(self.game_folder, 'maps')
         self.music_folder = path.join(self.game_folder, 'music')
         self.snd_folder = path.join(self.game_folder, 'snd')
@@ -225,7 +225,7 @@ class Game:
                     waiting = False
 
     def show_load_screen(self):
-        background = pg.image.load(path.join(path.join(path.dirname(__file__), 'img'), 'Loading.png')).convert_alpha()
+        background = pg.image.load(path.join(path.join(path.dirname(__file__), 'Images'), 'Loading.png')).convert_alpha()
         background_rect = background.get_rect()
         pg.display.set_mode((WIDTH, HEIGHT)).blit(background, background_rect)
         pg.display.flip()
